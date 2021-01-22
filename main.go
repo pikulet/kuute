@@ -24,6 +24,7 @@ func main() {
 }
 
 func index (c *gin.Context) {
+    c.Header("Cache-Control", "no-cache")
     c.Redirect(http.StatusMovedPermanently, "https://github.com/pikulet/kuute")
     c.Abort()
 }
