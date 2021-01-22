@@ -6,6 +6,7 @@ import (
     "io/ioutil"
     "net/http"
 
+    "time"
     "crypto/md5"
 
     "github.com/gin-gonic/gin"
@@ -35,10 +36,13 @@ func getCounter (c *gin.Context) {
     count := kuuteDB.getCounter(name)
     img := getShieldsIOImage(count)
 
+    // to block caching
     etag := fmt.Sprintf("%x", md5.Sum(img))
     c.Header("Cache-Control", "no-cache")
     c.Header("Content-Type", "image/svg+xml;charset=utf-8")
     c.Header("ETag", etag)
+    c.Header("Expires", time.Now().UTC().Format(http.TimeFormat))
+    c.Header("Last-Modified", time.Now().UTC().Format(http.TimeFormat))
     c.String(http.StatusOK, string(img))
 }
 
