@@ -12,7 +12,7 @@ import (
 var kuuteDB *KuuteDB
 
 func main() {
-    gin.SetMode(gin.ReleaseMode)
+//    gin.SetMode(gin.ReleaseMode)
 
     kuuteDB = InitKuuteDB()
     defer kuuteDB.shutdown()
@@ -36,11 +36,12 @@ func getCounter (c *gin.Context) {
 }
 
 const (
-    ShieldsIO string = "https://img.shields.io/badge/Views-%d-00bcc9mt"
+    ShieldsIO string = "https://img.shields.io/badge/Views-%d-00bcc9"
 )
 
 func getShieldsIOImage(count int) string {
-    resp, err := http.Get(fmt.Sprintf(ShieldsIO, count))
+    site := fmt.Sprintf(ShieldsIO, count)
+    resp, err := http.Get(site)
     if err != nil {
         panic (err)
     }

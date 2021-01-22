@@ -30,13 +30,8 @@ func InitKuuteDB() *KuuteDB {
         panic(err)
     }
 
-    
-    db := pg.Connect(&pg.Options{
-        User:       os.Getenv("DB_USER"), 
-        Password:   os.Getenv("DB_PASSWORD"),
-        Database:   os.Getenv("DB_DATABASE"),
-        Addr:       os.Getenv("DB_ADDR"),
-    })
+    options, _ := pg.ParseURL(os.Getenv("DATABASE_URL"))
+    db := pg.Connect(options)
 
     // Check connection
     _, err = db.Exec("SELECT 1")
