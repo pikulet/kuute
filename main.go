@@ -38,7 +38,7 @@ func getCounter (c *gin.Context) {
 }
 
 const (
-    ShieldsIO string = "https://img.shields.io/badge/Views-%d-00bcc9"
+    ShieldsIO string = "https://img.shields.io/badge/%E2%AD%90%Views-%d-00bcc9"
 )
 
 func getShieldsIOImage(count int) string {
