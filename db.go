@@ -75,9 +75,7 @@ func (kdb *KuuteDB) getCounter (username string) int {
             Update(&count)
     }
 
-    fmt.Println(count)
-
-    return 0
+    return count
 }
 
 func (kdb *KuuteDB) shutdown () {

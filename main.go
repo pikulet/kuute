@@ -1,31 +1,51 @@
 package main
 
 import (
-    "github.com/kataras/iris/v12"
+    "fmt"
+
+    "io/ioutil"
+    "net/http"
+
+    "github.com/gin-gonic/gin"
 )
 
 var kuuteDB *KuuteDB
 
 func main() {
+    gin.SetMode(gin.ReleaseMode)
+
     kuuteDB = InitKuuteDB()
     defer kuuteDB.shutdown()
 
-    app := iris.New()
-    app.Logger().SetLevel("info")
-
-    app.Get("/", index) 
-    app.Get("/{username:string regexp(^[a-zA-z0-9-]*$) max(39)}", getCounter) 
-    app.Listen(":8080")
+    r := gin.New()
+    r.GET("/:name", getCounter)
+    r.Run()
 }
 
-func index (c iris.Context) {
-    c.Redirect("https://github.com/pikulet/kuute", iris.StatusPermanentRedirect)
+func index (c *gin.Context) {
+    c.Redirect(http.StatusMovedPermanently, "https://github.com/pikulet/kuute")
 }
 
-func getCounter (c iris.Context) {
-    user := c.Params().Get("username")
-    c.Application().Logger().Infof("User: %s", user)
+func getCounter (c *gin.Context) {
+    name := c.Param("name")
+    count := kuuteDB.getCounter(name)
+    img := getShieldsIOImage(count)
 
-    kuuteDB.getCounter(user)
-    //c.Text("%d", count)
+    c.Header("Content-Type", "image/svg+xml;charset=utf-8")
+    c.String(http.StatusOK, img)
+}
+
+const (
+    ShieldsIO string = "https://img.shields.io/badge/Views-%d-00bcc9mt"
+)
+
+func getShieldsIOImage(count int) string {
+    resp, err := http.Get(fmt.Sprintf(ShieldsIO, count))
+    if err != nil {
+        panic (err)
+    }
+    defer resp.Body.Close()
+
+    body, err := ioutil.ReadAll(resp.Body)
+    return string(body)
 }
