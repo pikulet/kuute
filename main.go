@@ -25,7 +25,6 @@ func main() {
     router.GET("/:name", getCounter)
 
     server := & http.Server{
-        Addr:       ":8080",
         Handler:    router,
     }
 
