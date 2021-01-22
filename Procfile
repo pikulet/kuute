@@ -1,1 +1,1 @@
-web: kuute
+web: bin/kuute
