@@ -13,7 +13,7 @@ type User struct {
     tableName struct {} `pg:"kuute"`
     Id      int         `pg:",pk"`
     Name    string
-    Count   int
+    Count   int         `sql:",notnull"`
 }
 
 func (u User) String() string {
@@ -49,17 +49,33 @@ func InitKuuteDB() *KuuteDB {
 
 func (kdb *KuuteDB) getCounter (username string) int {
 
-    user := new(User)
-    err := kdb.db.Model(user).
-        Column("count").
-        Where("name = ?", username).
-        Select()
+    count := 1
+
+    user := User {
+        Name: username,
+        Count: count,
+    }
+
+    // insert
+    created, err := kdb.db.Model(&user).
+        Where("name = ?name").
+        OnConflict("DO NOTHING").
+        SelectOrInsert()
 
     if err != nil {
         panic(err)
     }
-    
-    fmt.Println(user)
+
+    if !created {
+        // update
+        _, err = kdb.db.Model(&user).
+            Where("name = ?name").
+            Set("count = count + 1").
+            Returning("count").
+            Update(&count)
+    }
+
+    fmt.Println(count)
 
     return 0
 }

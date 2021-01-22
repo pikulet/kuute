@@ -1,7 +1,7 @@
 CREATE DATABASE kuute;
 
 CREATE TABLE kuute (
-    kuute_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(40) UNIQUE NOT NULL,
-    count INT
+    count INT NOT NULL 
 );
