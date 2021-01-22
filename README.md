@@ -2,7 +2,7 @@
 Something kuute is in the making :unicorn:
 
 To use, add 
-`https://kuute.herokuapp.com/USERNAME` to your readme or profile! Be responsible and only add your own name.
+`https://pikulet.herokuapp.com/kuute/USERNAME` to your readme or profile! Be responsible and only add your own name.
 
 Example
 

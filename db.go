@@ -1,4 +1,4 @@
-package main
+package kuute
 
 import (
     "fmt"
@@ -8,6 +8,8 @@ import (
 
     "github.com/go-pg/pg/v10"
 )
+
+var db *pg.DB
 
 type User struct {
     tableName struct {} `pg:"kuute"`
@@ -20,11 +22,7 @@ func (u User) String() string {
     return fmt.Sprintf("User<%s %d>", u.Name, u.Count)
 }
 
-type KuuteDB struct {
-    db      *pg.DB
-}
-
-func InitKuuteDB() *KuuteDB {
+func Init() {
     err := godotenv.Load()
     if err != nil {
         panic(err)
@@ -39,7 +37,10 @@ func InitKuuteDB() *KuuteDB {
         panic(err)
     }
 
-    return &KuuteDB{ db }
+}
+
+func Shutdown() {
+    db.Close()
 }
 
 func (kdb *KuuteDB) getCounter (username string) int {
@@ -73,6 +74,3 @@ func (kdb *KuuteDB) getCounter (username string) int {
     return count
 }
 
-func (kdb *KuuteDB) shutdown () {
-    kdb.db.Close()
-}
