@@ -11,7 +11,7 @@ const (
     ShieldsIO string = "https://img.shields.io/badge/⭐ Views-%d-00bcc9"
 )
 
-func GetCounterBadge(name) {
+func GetCounterBadge(name string) []byte {
     count := database.getCounter(name)
     return getShieldsIOBadge(count)
 }

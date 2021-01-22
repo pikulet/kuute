@@ -43,7 +43,7 @@ func Shutdown() {
     db.Close()
 }
 
-func (kdb *KuuteDB) getCounter (username string) int {
+func getCounter (username string) int {
 
     count := 1
 
@@ -53,7 +53,7 @@ func (kdb *KuuteDB) getCounter (username string) int {
     }
 
     // insert
-    created, err := kdb.db.Model(&user).
+    created, err := db.Model(&user).
         Where("name = ?name").
         OnConflict("DO NOTHING").
         SelectOrInsert()
@@ -64,7 +64,7 @@ func (kdb *KuuteDB) getCounter (username string) int {
 
     if !created {
         // update
-        _, err = kdb.db.Model(&user).
+        _, err = db.Model(&user).
             Where("name = ?name").
             Set("count = count + 1").
             Returning("count").
