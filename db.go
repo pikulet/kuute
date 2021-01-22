@@ -29,7 +29,7 @@ func Init() {
     }
 
     options, _ := pg.ParseURL(os.Getenv("DATABASE_URL"))
-    db := pg.Connect(options)
+    db = pg.Connect(options)
 
     // Check connection
     _, err = db.Exec("SELECT 1")
