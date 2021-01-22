@@ -20,10 +20,17 @@ func main() {
     kuuteDB = InitKuuteDB()
     defer kuuteDB.shutdown()
 
-    r := gin.New()
-    r.GET("/", index)
-    r.GET("/:name", getCounter)
-    r.Run()
+    router  := gin.Default()
+    router.GET("/", index)
+    router.GET("/:name", getCounter)
+
+    server := & http.Server{
+        Addr:       ":8080",
+        Handler:    router,
+    }
+
+    server.SetKeepAlivesEnabled(false)
+    server.ListenAndServe()
 }
 
 func index (c *gin.Context) {
