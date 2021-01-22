@@ -23,13 +23,7 @@ func main() {
     router  := gin.Default()
     router.GET("/", index)
     router.GET("/:name", getCounter)
-
-    server := & http.Server{
-        Handler:    router,
-    }
-
-    server.SetKeepAlivesEnabled(false)
-    server.ListenAndServe()
+    router.Run()
 }
 
 func index (c *gin.Context) {
