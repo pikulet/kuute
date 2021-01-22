@@ -12,7 +12,7 @@ const (
 )
 
 func GetCounterBadge(name string) []byte {
-    count := db.getCounter(name)
+    count := getAndUpdateCounter(name)
     return getShieldsIOBadge(count)
 }
 

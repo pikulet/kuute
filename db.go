@@ -43,7 +43,7 @@ func Shutdown() {
     db.Close()
 }
 
-func getCounter (username string) int {
+func getAndUpdateCounter (username string) int {
 
     count := 1
 
