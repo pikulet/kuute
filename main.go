@@ -12,12 +12,13 @@ import (
 var kuuteDB *KuuteDB
 
 func main() {
-//    gin.SetMode(gin.ReleaseMode)
+    gin.SetMode(gin.ReleaseMode)
 
     kuuteDB = InitKuuteDB()
     defer kuuteDB.shutdown()
 
     r := gin.New()
+    r.GET("/", index)
     r.GET("/:name", getCounter)
     r.Run()
 }
